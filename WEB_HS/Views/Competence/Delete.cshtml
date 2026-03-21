@@ -1,0 +1,70 @@
+﻿@model WEB_HS.Entities.Competence
+@{
+    ViewData["Title"] = "Supprimer la compétence";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-exclamation-triangle"></i> @ViewData["Title"]
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="text-danger">Êtes-vous sûr de vouloir supprimer cette compétence ?</h5>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model.Titre</h5>
+                            <p class="card-text">@Model.Description</p>
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-info">Niveau @Model.Niveau/5</span>
+                                @if (!string.IsNullOrEmpty(Model.Categorie))
+                                {
+                                    <span class="badge bg-secondary">@Model.Categorie</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <h6><i class="bi bi-exclamation-diamond"></i> Attention !</h6>
+                        <p class="mb-0">
+                            Cette action est irréversible. La compétence sera supprimée de votre profil
+                            et ne sera plus visible par les visiteurs.
+                        </p>
+                    </div>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Supprimer définitivement
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6><i class="bi bi-lightbulb"></i> Alternative à la suppression</h6>
+                    <p class="mb-2">
+                        Au lieu de supprimer, vous pourriez :
+                    </p>
+                    <ul class="mb-0">
+                        <li><a asp-action="Edit" asp-route-id="@Model.Id">Modifier</a> la compétence</li>
+                        <li>Changer son niveau si vous êtes moins confiant</li>
+                        <li>La masquer temporairement en la modifiant</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

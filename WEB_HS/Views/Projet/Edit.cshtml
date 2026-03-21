@@ -1,0 +1,152 @@
+﻿@model WEB_HS.Entities.Projet
+@{
+    ViewData["Title"] = "Modifier le projet";
+    var hasImage = !string.IsNullOrEmpty(Model.ImageUrl);
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card shadow-lg">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="bi bi-pencil-square"></i> @ViewData["Title"]
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Aperçu de l'image actuelle -->
+                        @if (hasImage)
+                        {
+                            <div class="text-center mb-4">
+                                <h6>Image actuelle :</h6>
+                                <img src="@Model.ImageUrl"
+                                     class="img-thumbnail mb-2"
+                                     style="max-height: 200px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           id="removeImage" name="removeImage">
+                                    <label class="form-check-label text-danger" for="removeImage">
+                                        Supprimer cette image
+                                    </label>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Titre et Description -->
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label asp-for="Titre" class="form-label fw-bold">Titre du projet</label>
+                                <input asp-for="Titre" class="form-control" />
+                                <span asp-validation-for="Titre" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="DateCreation" class="form-label fw-bold">Date</label>
+                                <input asp-for="DateCreation" type="date" class="form-control" />
+                                <span asp-validation-for="DateCreation" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- Technologies -->
+                        <div class="mb-3">
+                            <label asp-for="Technologies" class="form-label fw-bold">Technologies</label>
+                            <input asp-for="Technologies" class="form-control" />
+                            <span asp-validation-for="Technologies" class="text-danger"></span>
+                        </div>
+
+                        <!-- Liens -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="LienDemo" class="form-label fw-bold">Lien démo</label>
+                                <input asp-for="LienDemo" class="form-control" />
+                                <span asp-validation-for="LienDemo" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="LienSource" class="form-label fw-bold">Lien code source</label>
+                                <input asp-for="LienSource" class="form-control" />
+                                <span asp-validation-for="LienSource" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Nouvelle image -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-image"></i> Changer l'image
+                            </label>
+                            <div class="input-group">
+                                <input type="file" name="imageFile" class="form-control"
+                                       accept="image/*" id="imageInput" />
+                            </div>
+                            <div id="imagePreview" class="mt-2"></div>
+                        </div>
+
+                        <!-- URL image -->
+                        <div class="mb-4">
+                            <label asp-for="ImageUrl" class="form-label fw-bold">URL de l'image</label>
+                            <input asp-for="ImageUrl" class="form-control" />
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle"></i> Enregistrer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Actions supplémentaires -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6><i class="bi bi-gear"></i> Actions supplémentaires</h6>
+                    <div class="d-grid gap-2">
+                        <a asp-action="Delete" asp-route-id="@Model.Id"
+                           class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i> Supprimer ce projet
+                        </a>
+                        <a href="@Url.Action("Details", "Profil", new { id = Model.PersonneId })"
+                           class="btn btn-outline-primary">
+                            <i class="bi bi-eye"></i> Voir sur mon profil public
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Aperçu de la nouvelle image
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var preview = document.getElementById('imagePreview');
+                    preview.innerHTML = '<div class="alert alert-info">Nouvelle image sélectionnée :</div>' +
+                                       '<img src="' + e.target.result + '" class="img-thumbnail" style="max-height: 150px;">';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

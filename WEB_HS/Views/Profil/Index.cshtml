@@ -1,0 +1,79 @@
+﻿@model List<WEB_HS.Entities.Personne>
+@{
+    ViewData["Title"] = "Tous les profils";
+}
+
+<div class="container">
+    <h1 class="mb-4">
+        <i class="bi bi-people text-primary"></i> Tous les profils
+    </h1>
+
+    <div class="row">
+        @foreach (var profil in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <!-- Photo -->
+                        <img src="@profil.Photo" alt="@profil.Nom" 
+                             class="rounded-circle mb-3 mx-auto" 
+                             style="width: 120px; height: 120px; object-fit: cover;">
+                        
+                        <!-- Nom et titre -->
+                        <h5 class="card-title">@profil.Nom @profil.Prenom</h5>
+                        <h6 class="card-subtitle mb-3 text-muted">@profil.Titre</h6>
+                        
+                        <!-- Bio courte -->
+                        @if (!string.IsNullOrEmpty(profil.Bio))
+                        {
+                            <p class="card-text mb-3">
+                                @if (profil.Bio.Length > 100)
+                                {
+                                    @profil.Bio.Substring(0, 100)<text>...</text>
+                                }
+                                else
+                                {
+                                    @profil.Bio
+                                }
+                            </p>
+                        }
+                        
+                        <!-- Compétences -->
+                        @if (profil.Competences != null && profil.Competences.Any())
+                        {
+                            <div class="mb-3">
+                                @foreach (var competence in profil.Competences.Take(3))
+                                {
+                                    <span class="badge bg-info me-1 mb-1">@competence.Titre</span>
+                                }
+                                @if (profil.Competences.Count > 3)
+                                {
+                                    <span class="badge bg-secondary">+@(profil.Competences.Count - 3)</span>
+                                }
+                            </div>
+                        }
+                        
+                        <!-- Bouton -->
+                        <a href="@Url.Action("Details", "Profil", new { id = profil.Id })" 
+                           class="btn btn-primary">
+                            <i class="bi bi-eye"></i> Voir le profil
+                        </a>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        <small>
+                            <i class="bi bi-calendar"></i> Inscrit le @profil.DateInscription.ToString("dd/MM/yyyy")
+                        </small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Message si vide -->
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> Aucun profil disponible pour le moment.
+        </div>
+    }
+</div>

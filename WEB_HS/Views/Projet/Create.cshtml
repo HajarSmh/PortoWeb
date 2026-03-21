@@ -1,0 +1,73 @@
+﻿<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-plus-circle"></i> Ajouter un projet
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form action="/Projet/Create" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label fw-bold">Titre du projet *</label>
+                                <input type="text" name="Titre" class="form-control" required
+                                       placeholder="Ex: Site e-commerce, Application mobile..." />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Date de réalisation *</label>
+                                <input type="date" name="DateCreation" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description détaillée *</label>
+                            <textarea name="Description" class="form-control" rows="4" required
+                                      placeholder="Décrivez votre projet..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Technologies utilisées *</label>
+                            <input type="text" name="Technologies" class="form-control" required
+                                   placeholder="Ex: C#, ASP.NET Core, SQL Server, Bootstrap..." />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Lien de démonstration</label>
+                                <input type="url" name="LienDemo" class="form-control"
+                                       placeholder="https://monprojet.com" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Lien du code source</label>
+                                <input type="url" name="LienSource" class="form-control"
+                                       placeholder="https://github.com/votrecompte/projet" />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">URL de l'image</label>
+                            <input type="url" name="ImageUrl" class="form-control"
+                                   placeholder="https://example.com/image.jpg" />
+                            <div class="form-text">
+                                Vous pouvez uploader une image ou fournir une URL
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="/Projet" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Créer le projet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

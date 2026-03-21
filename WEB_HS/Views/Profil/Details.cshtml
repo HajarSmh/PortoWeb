@@ -1,0 +1,268 @@
+﻿@model WEB_HS.Entities.Personne
+@{
+    ViewData["Title"] = $"Portfolio de {Model.Nom}";
+    var userId = Context.Session.GetInt32("UserId");
+    var isMyProfile = userId.HasValue && userId == Model.Id;
+}
+
+<div class="container">
+    <!-- Header du profil -->
+    <div class="row mb-5">
+        <div class="col-md-3 text-center">
+            <img src="@Model.Photo" alt="@Model.Nom"
+                 class="rounded-circle img-fluid mb-3" style="width: 200px; height: 200px; object-fit: cover;">
+
+            @if (isMyProfile)
+            {
+                <a href="@Url.Action("Edit", "Profil", new { id = Model.Id })"
+                   class="btn btn-outline-primary btn-sm w-100 mb-2">
+                    <i class="bi bi-pencil"></i> Modifier mon profil
+                </a>
+                <a href="@Url.Action("Messages", "Profil")"
+                   class="btn btn-outline-info btn-sm w-100">
+                    <i class="bi bi-envelope"></i> Mes messages (@Model.MessagesRecus.Count(m => !m.EstLu))
+                </a>
+            }
+        </div>
+
+        <div class="col-md-9">
+            <h1 class="display-5">@Model.Nom @Model.Prenom</h1>
+            <h4 class="text-muted">@Model.Titre</h4>
+
+            <div class="mt-3">
+                <p>@Model.Bio</p>
+            </div>
+
+            <!-- Liens sociaux -->
+            <div class="mt-4">
+                @if (!string.IsNullOrEmpty(Model.LinkedIn))
+                {
+                    <a href="@Model.LinkedIn" target="_blank" class="btn btn-outline-primary me-2">
+                        <i class="bi bi-linkedin"></i> LinkedIn
+                    </a>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.GitHub))
+                {
+                    <a href="@Model.GitHub" target="_blank" class="btn btn-outline-dark">
+                        <i class="bi bi-github"></i> GitHub
+                    </a>
+                }
+            </div>
+
+            <!-- Statistiques -->
+            <div class="row mt-4">
+                <div class="col-4 text-center">
+                    <h5>@Model.Competences.Count</h5>
+                    <small class="text-muted">Compétences</small>
+                </div>
+                <div class="col-4 text-center">
+                    <h5>@Model.Projets.Count</h5>
+                    <small class="text-muted">Projets</small>
+                </div>
+                <div class="col-4 text-center">
+                    <h5>@Model.MessagesRecus.Count</h5>
+                    <small class="text-muted">Messages</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Compétences -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-4">
+                <i class="bi bi-tools"></i> Compétences
+                @if (isMyProfile)
+                {
+                    <a href="@Url.Action("Index", "Competence")" class="btn btn-sm btn-outline-primary float-end">
+                        <i class="bi bi-plus"></i> Gérer
+                    </a>
+                }
+            </h3>
+
+            @if (Model.Competences.Any())
+            {
+                <div class="row">
+                    @foreach (var competence in Model.Competences)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">@competence.Titre</h5>
+                                    <p class="card-text">@competence.Description</p>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: @(competence.Niveau * 20)%">
+                                            Niveau: @competence.Niveau/5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Aucune compétence ajoutée pour le moment.
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Section Projets -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-4">
+                <i class="bi bi-briefcase"></i> Projets réalisés
+                @if (isMyProfile)
+                {
+                    <a href="@Url.Action("Index", "Projet")" class="btn btn-sm btn-outline-primary float-end">
+                        <i class="bi bi-plus"></i> Gérer
+                    </a>
+                }
+            </h3>
+
+            @if (Model.Projets.Any())
+            {
+                <div class="row">
+                    @foreach (var projet in Model.Projets)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img src="@projet.ImageUrl" class="card-img-top"
+                                     alt="@projet.Titre" style="height: 180px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@projet.Titre</h5>
+                                    <p class="card-text">@projet.Description</p>
+                                    <p class="text-muted">
+                                        <small>@projet.DateCreation.ToString("dd/MM/yyyy")</small>
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    @if (!string.IsNullOrEmpty(projet.LienDemo))
+                                    {
+                                        <a href="@projet.LienDemo" target="_blank"
+                                           class="btn btn-primary btn-sm">Voir le projet</a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(projet.LienSource))
+                                    {
+                                        <a href="@projet.LienSource" target="_blank"
+                                           class="btn btn-secondary btn-sm">Code source</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Aucun projet ajouté pour le moment.
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Section Contact/Message-->
+    @if (!isMyProfile)
+    {
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-envelope"></i> Contacter @Model.Nom
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form asp-controller="Profil" asp-action="SendMessage" method="post">
+                            <input type="hidden" name="personneId" value="@Model.Id" />
+
+                            @if (!userId.HasValue)
+                            {
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Votre nom *</label>
+                                        <input type="text" name="nomAuteur" class="form-control" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Votre email *</label>
+                                        <input type="email" name="emailAuteur" class="form-control" required />
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <input type="hidden" name="nomAuteur" value="@Context.Session.GetString("UserName")" />
+                                <input type="hidden" name="emailAuteur" value="@Context.Session.GetString("UserEmail")" />
+                            }
+
+                            <div class="mb-3">
+                                <label class="form-label">Votre message *</label>
+                                <textarea name="contenu" class="form-control" rows="4"
+                                      placeholder="Dites bonjour à @Model.Nom..." required></textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-send"></i> Envoyer le message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Section Messages reçus (visible seulement pour le propriétaire) -->
+    @if (isMyProfile && Model.MessagesRecus.Any())
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4">
+                    <i class="bi bi-envelope-heart"></i> Messages reçus
+                    <span class="badge bg-primary">@Model.MessagesRecus.Count(m => !m.EstLu) nouveaux</span>
+                </h3>
+
+                <div class="list-group">
+                    @foreach (var message in Model.MessagesRecus.OrderByDescending(m => m.DateCreation))
+                    {
+                        <div class="list-group-item @(message.EstLu ? "" : "list-group-item-warning")">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">
+                                    @if (message.NomAuteur != null)
+                                    {
+                                        <strong>@message.NomAuteur</strong>
+                                        <small class="text-muted">(@message.EmailAuteur)</small>
+                                    }
+                                    else
+                                    {
+                                        <strong>@message.NomAuteur</strong>
+                                        <small class="text-muted">(@message.EmailAuteur)</small>
+                                    }
+                                </h6>
+                                <small>@message.DateCreation.ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                            <p class="mb-1">@message.Contenu</p>
+                            @if (!message.EstLu)
+                            {
+                                <form asp-controller="Profil" asp-action="MarkAsRead" method="post"
+                                      class="d-inline">
+                                    <input type="hidden" name="id" value="@message.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                        Marquer comme lu
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

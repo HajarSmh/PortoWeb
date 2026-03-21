@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Mentions légales";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">@ViewData["Title"]</h1>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="mb-3"><i class="bi bi-shield-check"></i> Politique de confidentialité</h3>
+
+                    <h5 class="mt-4">1. Collecte des données</h5>
+                    <p>
+                        Nous collectons les informations que vous nous fournissez lors de l'inscription :
+                        nom, email, biographie et informations de profil. Ces données sont utilisées
+                        uniquement pour le fonctionnement de la plateforme.
+                    </p>
+
+                    <h5 class="mt-4">2. Protection des données</h5>
+                    <p>
+                        Vos données sont stockées de manière sécurisée et ne sont pas partagées avec
+                        des tiers sans votre consentement.
+                    </p>
+
+                    <h5 class="mt-4">3. Vos droits</h5>
+                    <p>
+                        Vous avez le droit d'accéder, de modifier ou de supprimer vos données à tout moment
+                        depuis votre espace personnel.
+                    </p>
+
+                    <h5 class="mt-4">4. Cookies</h5>
+                    <p>
+                        Nous utilisons des cookies de session pour le bon fonctionnement de l'application.
+                        Ces cookies sont nécessaires pour l'authentification et ne contiennent pas
+                        d'informations personnelles sensibles.
+                    </p>
+
+                    <div class="alert alert-info mt-4">
+                        <h6><i class="bi bi-info-circle"></i> Contact</h6>
+                        <p class="mb-0">
+                            Pour toute question concernant vos données, contactez-nous via le
+                            <a asp-controller="Contact" asp-action="Index">formulaire de contact</a>.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                            <i class="bi bi-arrow-left"></i> Retour à l'accueil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

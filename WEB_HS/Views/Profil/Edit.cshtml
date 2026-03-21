@@ -1,0 +1,74 @@
+﻿@model WEB_HS.Entities.Personne
+@{
+    ViewData["Title"] = "Modifier le profil";
+}
+
+<h2>Modifier le profil</h2>
+
+<form asp-action="Edit" asp-controller="Profil" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="Nom" class="form-label"></label>
+        <input asp-for="Nom" class="form-control" />
+        <span asp-validation-for="Nom" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Prenom" class="form-label"></label>
+        <input asp-for="Prenom" class="form-control" />
+        <span asp-validation-for="Prenom" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Titre" class="form-label"></label>
+        <input asp-for="Titre" class="form-control" />
+        <span asp-validation-for="Titre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Bio" class="form-label"></label>
+        <textarea asp-for="Bio" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Bio" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LinkedIn" class="form-label"></label>
+        <input asp-for="LinkedIn" class="form-control" />
+        <span asp-validation-for="LinkedIn" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GitHub" class="form-label"></label>
+        <input asp-for="GitHub" class="form-control" />
+        <span asp-validation-for="GitHub" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Photo</label>
+        <div class="d-flex align-items-center gap-3">
+            <img src="@Model.Photo" alt="Photo" style="width:80px; height:80px; object-fit:cover;" class="rounded-circle" />
+            <div>
+                <input type="file" name="photoFile" />
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" name="removePhoto" value="true" id="removePhoto" />
+                    <label class="form-check-label" for="removePhoto">Supprimer la photo</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary ms-2">Annuler</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

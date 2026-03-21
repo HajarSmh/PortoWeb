@@ -1,0 +1,162 @@
+﻿@model List<WEB_HS.Entities.Personne>
+@{
+    ViewData["Title"] = "PortoWeb - Découvrez les talents";
+}
+
+<!-- Hero Section -->
+<div class="hero-section bg-primary text-white py-5 mb-5 rounded bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold text-dark">Bienvenue sur PortoWeb</h1>
+                <p class="lead text-dark">La plateforme qui connecte les développeurs talentueux avec des opportunités exceptionnelles.</p>
+                <p class="text-dark">@ViewBag.MessageBienvenue</p>
+
+                <div class="mt-4">
+                    <a href="/Profil/Index" class="btn btn-light btn-lg me-3 ">
+                        <i class="bi bi-people-fill text-info "></i> Découvrir les profils
+                    </a>
+
+
+                    @if (Context.Session.GetInt32("UserId") == null)
+                    {
+                        <a href="@Url.Action("Register", "Account")" class="btn btn-light btn-lg ">
+                            <i class="bi bi-person-plus text-info "></i> Créer mon portfolio
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistiques -->
+<div class="row text-center mb-5">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-6 text-primary">@ViewBag.TotalDevs</h2>
+                <p class="text-muted">Développeurs inscrits</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-6 text-success">@ViewBag.TotalProjets</h2>
+                <p class="text-muted">Projets réalisés</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-6 text-info">@ViewBag.TotalCompetences</h2>
+                <p class="text-muted">Compétences différentes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="display-6 text-warning">100%</h2>
+                <p class="text-muted">Gratuit</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Profils récents -->
+<div class="mb-5" id="developpeurs-section">
+    <h2 class="mb-4">Développeurs récemment inscrits</h2>
+    <div class="row">
+        @foreach (var profil in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                       
+                        <h5 class="card-title">@profil.Nom @profil.Prenom</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@profil.Titre</h6>
+                        <p class="card-text">@(profil.Bio?.Length > 100 ? profil.Bio.Substring(0, 100) + "..." : profil.Bio)</p>
+
+                        <div class="mb-3">
+                            @foreach (var competence in profil.Competences.Take(3))
+                            {
+                                <span class="badge bg-info me-1">@competence.Titre</span>
+                            }
+                            @if (profil.Competences.Count > 3)
+                            {
+                                <span class="badge bg-secondary">+@(profil.Competences.Count - 3)</span>
+                            }
+                        </div>
+
+                        <a href="@Url.Action("Details", "Profil", new { id = profil.Id })"
+                           class="btn btn-outline-primary">Voir le portfolio</a>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        <small>Inscrit le @profil.DateInscription.ToString("dd/MM/yyyy")</small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="bg-light p-5 rounded text-center">
+    <h2>Prêt à montrer votre talent ?</h2>
+    <p class="lead mb-4">Rejoignez notre communauté de développeurs et faites-vous remarquer !</p>
+
+    @if (Context.Session.GetInt32("UserId") == null)
+    {
+        <a href="@Url.Action("Register", "Account")" class="btn btn-primary btn-lg bg-dark">
+            <i class="bi bi-rocket-takeoff"></i> Créer mon portfolio gratuitement
+        </a>
+    }
+    else
+    {
+        <a href="@Url.Action("Details", "Profil", new { id = Context.Session.GetInt32("UserId") })"
+           class="btn btn-primary btn-lg">
+            <i class="bi bi-pencil-square"></i> Compléter mon profil
+        </a>
+    }
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.hash === '#developpeurs-section') {
+                setTimeout(function() {
+                    const element = document.getElementById('developpeurs-section');
+                    if (element) {
+                        element.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }, 100); 
+            }
+
+            // Gère les clics sur les liens internes
+            document.querySelectorAll('a[href*="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+
+                    // Si c'est un lien vers #developpeurs-section
+                    if (href.includes('#developpeurs-section')) {
+                        e.preventDefault();
+                        const element = document.getElementById('developpeurs-section');
+                        if (element) {
+                            element.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                            // Met à jour l'URL sans recharger la page
+                            history.pushState(null, null, '#developpeurs-section');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

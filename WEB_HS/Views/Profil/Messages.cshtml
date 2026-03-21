@@ -1,0 +1,100 @@
+﻿@model List<WEB_HS.Entities.Message>
+@{
+    ViewData["Title"] = "Mes messages";
+    var userId = Context.Session.GetInt32("UserId");
+    var unreadCount = Model.Count(m => !m.EstLu);
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+            <i class="bi bi-envelope"></i> @ViewData["Title"]
+            @if (unreadCount > 0)
+            {
+                <span class="badge bg-danger ms-2">@unreadCount nouveau(x)</span>
+            }
+        </h1>
+        <a href="@Url.Action("Details", "Profil", new { id = userId })" 
+                 class="btn btn-outline-primary"  btn-sm d-flex align-items-center>
+            <i class="bi bi-arrow-left"></i> Retour au profil
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-envelope-open display-1 text-muted mb-3"></i>
+            <h3>Boîte de réception vide</h3>
+            <p class="lead text-muted">
+                Vous n'avez pas encore reçu de messages.
+            </p>
+            <p>
+                Partagez votre profil pour recevoir des messages !
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="mb-3">
+            @if (unreadCount > 0)
+            {
+                <form asp-controller="Profil" asp-action="MarkAllAsRead" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-check-all"></i> Tout marquer comme lu
+                    </button>
+                </form>
+            }
+        </div>
+
+        <div class="list-group">
+            @foreach (var message in Model.OrderByDescending(m => m.DateCreation))
+            {
+                <div class="list-group-item list-group-item-action @(!message.EstLu ? "list-group-item-warning" : "") p-3">
+                    <div class="d-flex justify-content-between align-items-start">
+
+                        @* Infos Auteur et Contenu *@
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-1">
+                                @if (message.PersonneId != null)
+                                {
+                                    <a href="@Url.Action("Details", "Profil", new { id = message.PersonneId })" class="fw-bold text-primary text-decoration-none me-2">
+                                        @message.NomAuteur
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="fw-bold me-2">@message.NomAuteur</span>
+                                }
+                                <small class="text-muted">(@message.EmailAuteur)</small>
+                            </div>
+                            <p class="mb-0 text-secondary">@message.Contenu</p>
+                        </div>
+
+                        @* Date et Bouton Lu *@
+                        <div class="text-end ms-3" style="min-width: 120px;">
+                            <small class="text-muted d-block mb-2">
+                                @message.DateCreation.ToString("dd/MM/yyyy")<br />
+                                @message.DateCreation.ToString("HH:mm")
+                            </small>
+
+                            @if (!message.EstLu)
+                            {
+                                <form asp-controller="Profil" asp-action="MarkAsRead" method="post">
+                                    <input type="hidden" name="id" value="@message.Id" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-check"></i> Lu
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Lu</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+

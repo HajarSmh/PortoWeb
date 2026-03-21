@@ -1,0 +1,116 @@
+﻿@model WEB_HS.Entities.Competence
+@{
+    ViewData["Title"] = "Modifier la compétence";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="bi bi-pencil-square"></i> @ViewData["Title"]
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Titre" class="form-label fw-bold">
+                                <i class="bi bi-card-heading"></i> Titre de la compétence
+                            </label>
+                            <input asp-for="Titre" class="form-control" />
+                            <span asp-validation-for="Titre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">
+                                <i class="bi bi-text-paragraph"></i> Description
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Niveau" class="form-label fw-bold">
+                                    <i class="bi bi-bar-chart"></i> Niveau
+                                </label>
+                                <select asp-for="Niveau" class="form-select">
+                                    <option value="1">1 - Débutant</option>
+                                    <option value="2">2 - Intermédiaire</option>
+                                    <option value="3">3 - Avancé</option>
+                                    <option value="4">4 - Expert</option>
+                                    <option value="5">5 - Maîtrise</option>
+                                </select>
+                                <span asp-validation-for="Niveau" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Categorie" class="form-label fw-bold">
+                                    <i class="bi bi-tags"></i> Catégorie
+                                </label>
+                                <select asp-for="Categorie" class="form-select">
+                                    <option value="">-- Sélectionnez --</option>
+                                    <option value="Langages">Langages de programmation</option>
+                                    <option value="Frameworks">Frameworks & Bibliothèques</option>
+                                    <option value="Bases de données">Bases de données</option>
+                                    <option value="Outils">Outils de développement</option>
+                                    <option value="DevOps">DevOps & Cloud</option>
+                                    <option value="Design">Design & UX/UI</option>
+                                    <option value="Gestion">Gestion de projet</option>
+                                    <option value="Soft Skills">Soft Skills</option>
+                                </select>
+                                <span asp-validation-for="Categorie" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle"></i> Enregistrer les modifications
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Niveaux de compétence -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6><i class="bi bi-info-circle"></i> Guide des niveaux</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>1 - Débutant</strong></p>
+                            <p class="small text-muted">Connaissances de base, peut suivre des tutoriels</p>
+
+                            <p class="mb-1"><strong>2 - Intermédiaire</strong></p>
+                            <p class="small text-muted">Peut travailler sur des projets simples</p>
+
+                            <p class="mb-1"><strong>3 - Avancé</strong></p>
+                            <p class="small text-muted">Expérience sur plusieurs projets, peut résoudre des problèmes complexes</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>4 - Expert</strong></p>
+                            <p class="small text-muted">Peut former d'autres personnes, expérience approfondie</p>
+
+                            <p class="mb-1"><strong>5 - Maîtrise</strong></p>
+                            <p class="small text-muted">Reconnu comme expert, contribue à l'avancement du domaine</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

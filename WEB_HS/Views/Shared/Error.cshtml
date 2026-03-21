@@ -1,0 +1,30 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Erreur";
+}
+
+<div class="container text-center py-5">
+    <i class="bi bi-exclamation-triangle display-1 text-danger mb-4"></i>
+    <h1 class="display-4 text-danger">Oups !</h1>
+    <h2 class="mb-4">Une erreur s'est produite.</h2>
+
+    @if (Model?.ShowRequestId ?? false)
+    {
+        <p>
+            <strong>ID de la requête :</strong> <code>@Model.RequestId</code>
+        </p>
+    }
+
+    <p class="lead mb-4">
+        Nous nous excusons pour ce désagrément. L'équipe technique a été notifiée.
+    </p>
+
+    <div class="mt-4">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg me-3">
+            <i class="bi bi-house"></i> Retour à l'accueil
+        </a>
+        <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-primary btn-lg">
+            <i class="bi bi-envelope"></i> Signaler ce problème
+        </a>
+    </div>
+</div>

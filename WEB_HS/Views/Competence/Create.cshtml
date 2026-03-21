@@ -1,0 +1,67 @@
+﻿<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-plus-circle"></i> Ajouter une compétence
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form action="/Competence/Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Titre de la compétence *</label>
+                            <input type="text" name="Titre" class="form-control" required
+                                   placeholder="Ex: C#, JavaScript, React, SQL..." />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea name="Description" class="form-control" rows="3"
+                                      placeholder="Décrivez votre expérience..."></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Niveau *</label>
+                                <select name="Niveau" class="form-select" required>
+                                    <option value="1">1 - Débutant</option>
+                                    <option value="2">2 - Intermédiaire</option>
+                                    <option value="3">3 - Avancé</option>
+                                    <option value="4">4 - Expert</option>
+                                    <option value="5">5 - Maîtrise</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Catégorie</label>
+                                <select name="Categorie" class="form-select">
+                                    <option value="">-- Sélectionnez --</option>
+                                    <option value="Langages">Langages de programmation</option>
+                                    <option value="Frameworks">Frameworks & Bibliothèques</option>
+                                    <option value="Bases de données">Bases de données</option>
+                                    <option value="Outils">Outils de développement</option>
+                                    <option value="DevOps">DevOps & Cloud</option>
+                                    <option value="Design">Design & UX/UI</option>
+                                    <option value="Gestion">Gestion de projet</option>
+                                    <option value="Soft Skills">Soft Skills</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/Competence" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Créer la compétence
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

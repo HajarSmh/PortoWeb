@@ -1,0 +1,115 @@
+﻿@model WEB_HS.Models.FormulaireCreationViewModel
+@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-lg">
+            <div class="card-header bg-success text-white text-center py-3">
+                <h3 class="mb-0">
+                    <i class="bi bi-person-plus"></i> Créer votre compte
+                </h3>
+                <p class="mb-0">Rejoignez notre communauté de développeurs</p>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Nom" class="form-label fw-bold">
+                                <i class="bi bi-person"></i> Nom *
+                            </label>
+                            <input asp-for="Nom" class="form-control"
+                                   placeholder="Votre nom " />
+                            <span asp-validation-for="Nom" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Prenom" class="form-label fw-bold">
+                                <i class="bi bi-person"></i> Prenom *
+                            </label>
+                            <input asp-for="Prenom" class="form-control" placeholder="Votre Prenom " /> <span asp-validation-for="Prenom" class="text-danger small"></span>
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label fw-bold">
+                                <i class="bi bi-envelope"></i> Adresse email *
+                            </label>
+                            <input asp-for="Email" class="form-control"
+                                   placeholder="votre@email.com" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Password" class="form-label fw-bold">
+                                <i class="bi bi-lock"></i> Mot de passe *
+                            </label>
+                            <input asp-for="Password" type="password" class="form-control" />
+                            <div class="form-text">
+                                Au moins 6 caractères
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label fw-bold">
+                                <i class="bi bi-lock-fill"></i> Confirmation *
+                            </label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Titre" class="form-label fw-bold">
+                            <i class="bi bi-briefcase"></i> Titre professionnel
+                        </label>
+                        <input asp-for="Titre" class="form-control"
+                               placeholder="Ex: Développeur Full-Stack, Designer UX/UI..." />
+                        <span asp-validation-for="Titre" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Bio" class="form-label fw-bold">
+                            <i class="bi bi-chat-left-text"></i> Présentation
+                        </label>
+                        <textarea asp-for="Bio" class="form-control" rows="3"
+                                  placeholder="Parlez-nous de vous, vos passions, vos compétences..."></textarea>
+                        <div class="form-text">
+                            Cette description apparaîtra sur votre profil public
+                        </div>
+                        <span asp-validation-for="Bio" class="text-danger small"></span>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h6><i class="bi bi-info-circle"></i> À propos de votre compte</h6>
+                        <p class="mb-0 small">
+                            Votre profil sera visible par tous les visiteurs. Vous pourrez ajouter
+                            vos compétences, projets et liens sociaux après l'inscription.
+                        </p>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle"></i> Créer mon compte
+                        </button>
+                        <a asp-action="Login" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> J'ai déjà un compte
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
